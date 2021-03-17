@@ -14,18 +14,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from users.views import UserView, UserDetail
+from users.views import UserView, UserDetail, UserCreateView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     #TokenRefreshView,
 )
 
+from django.conf.urls import url
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Markets API')
+
+schema_url_patterns = [
+    url(r'^api/$', schema_view),
+    url(r'api/users/', UserView.as_view()),
+]
+
+
+
 urlpatterns = [
+    path("", include("users.urls")),
     path('admin/', admin.site.urls),
-    path('users/', UserView.as_view()),
-    path('users/<int:pk>/', UserDetail.as_view()),
+    path('api/users/', UserView.as_view()),
+    path('api/users/<int:pk>/', UserDetail.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('swagger/', schema_view)
 
 ]
+schema_view = get_swagger_view(title="Markets API", patterns=urlpatterns,)

@@ -1,0 +1,101 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <title>Awesome Markets app</title>
+
+</head>
+<style>
+.errorlist {
+    color: red;
+    font-size: .8rem;
+}
+</style>
+<body>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <!-- in the link we define url name = home -->
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Awesome Markets App</a>
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+    </ul>
+
+    </nav>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+                    {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+
+        {% block content %}
+        {% endblock%}
+        <div style="width: 95%; height: 720px" id="mapContainer"></div>
+    </div>
+
+    <script>
+        var platform = new H.service.Platform({
+            'apikey': 'kAznHhgmv_AHgiRg59h_8jz6H4WkpFHq79zXEOD_aO0'
+          });
+
+          // Obtain the default map types from the platform object:
+        var defaultLayers = platform.createDefaultLayers();
+
+        // Instantiate (and display) a map object:
+        var map = new H.Map(
+        document.getElementById('mapContainer'),
+        defaultLayers.vector.normal.map,
+        {
+            center: {lat:50, lng:5},
+            zoom: 4,
+            pixelRatio: window.devicePixelRatio || 1
+        });
+
+        function moveMapToBerlin(map){
+            map.setCenter({lat:52.5159, lng:13.3777});
+            map.setZoom(14);
+          }
+
+        window.addEventListener('resize', () => map.getViewPort().resize());
+
+        var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+        // Create the default UI components
+        var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+        // Now use the map as required...
+        window.onload = function () {
+        moveMapToBerlin(map);
+}
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

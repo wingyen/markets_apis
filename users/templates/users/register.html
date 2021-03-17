@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load rest_framework %}
+
+{% block content %}
+    <h1 class="text-center">Register</h1>
+<div class="col-md-6 offset-md-3">
+    <form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </button>
+            <p>You form has errors...</p>
+        </div>
+    {% endif %}
+
+    {% for field in form %}
+        <p>
+        <div class="fieldWrapper">
+        {{ field.label_tag }} {{ field }}
+
+        {% if field.errors %}
+        {{ field.errors }}
+        {% endif %}
+        </div>
+        </p>
+
+    {% endfor %}
+    <input type="submit" value="Register" class="btn btn-secondary">
+
+    </form>
+</div>
+
+<script>
+    var email = document.getElementById("mail");
+
+    email.addEventListener("input", function (event) {
+    if (email.validity.typeMismatch) {
+        email.setCustomValidity("I expect an e-mail, darling!");
+        email.setAttribute("class", "form-control is-invalid");
+     } else {
+        email.setCustomValidity("");
+        email.setAttribute("class", "form-control");
+    }
+    });
+
+</script>
+
+{% endblock %}
