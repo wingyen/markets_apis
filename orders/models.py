@@ -2,25 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-#/orders/ endpoint, primarily requestable through Post request, using those fields (snake_case or CamelCase open to you):
-#i. isin (String, 12 chars (this identifies a stock))
-# ii. limit_price (Float, always >0)
-# iii. side (Enum: buy | sell, case sensitive tolerant)
-# iv. valid_until (Integer, Unix UTC Timestamp)
-# v. quantity (Integer, always >0)
+class Side(models.TextChoices):
+    BUY = "buy", "buy"
+    SELL = "sell", "sell"
 
 
-class Side:
-    BUY = 1
-    SELL = 2
 
-    CHOICES = (
-        (BUY, 'buy'),
-        (SELL, 'sell'),
-    )
+class Order(models.Model):
+    BUY = "buy"
+    SELL = "sell"
+    SIDE_CHOICES = [
+        (BUY, "buy"),
+        (BUY, "sell")
+    ]
 
-
-class Orders(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -28,8 +23,10 @@ class Orders(models.Model):
     )
     isin = models.CharField(max_length=12, blank=True)
     limit_price = models.FloatField(null=True,default=0.0)
-    side = models.IntegerField(choices=Side.CHOICES)
+    side = models.CharField(choices=Side.choices, max_length=4)
     valid_until = models.IntegerField(null=True, blank=True)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(null=True)
+
+
 
 

@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 djangorestframework = "*"
-djangorestframework-simplejwt = "*"
 django-rest-swagger = "*"
+django-rest-enumfield = "*"
 
 [dev-packages]
 
